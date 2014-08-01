@@ -357,7 +357,7 @@ before point."
                     (not (lookup-key evil-motion-state-map (kbd "C-i"))))
                (define-key evil-motion-state-map (kbd "C-i") 'evil-jump-forward))))))
 
-(defcustom evil-want-C-u-scroll nil
+(defcustom evil-want-C-u-scroll t
   "Whether \"C-u\" scrolls like in Vim."
   :type 'boolean
   :group 'evil

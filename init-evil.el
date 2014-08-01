@@ -3,6 +3,7 @@
 (setq evil-symbol-word-search t)
 ;; load undo-tree and ert
 (add-to-list 'load-path "~/.emacs.d/site-lisp/evil/lib")
+;;; (setq evil-want-C-scroll t)
 (require 'evil)
 (evil-mode 1)
 
@@ -37,7 +38,6 @@
       '(
         (minibuffer-inactive-mode . emacs)
         (ggtags-global-mode . emacs)
-        (grep-mode . emacs)
         (Info-mode . emacs)
         (term-mode . emacs)
         (sdcv-mode . emacs)
@@ -154,15 +154,14 @@ to replace the symbol under cursor"
   "mf" 'mark-defun
   "em" 'erase-message-buffer
   "eb" 'eval-buffer
-  "sc" 'shell-command
   "srt" 'sr-speedbar-toggle
   "srr" 'sr-speedbar-refresh-toggle
   "ee" 'eval-expression
   "cx" 'copy-to-x-clipboard
   "cy" 'strip-convert-lines-into-one-big-string
   "cff" 'current-font-face
-  "fnb" 'cp-filename-of-current-buffer
-  "fpb" 'cp-fullpath-of-current-buffer
+  "fnb" 'copy-filename-of-current-buffer
+  "fpb" 'copy-full-path-of-current-buffer
   "dj" 'dired-jump ;; open the dired from current file
   "ff" 'toggle-full-window ;; I use WIN+F in i3
   "tm" 'get-term
@@ -171,6 +170,7 @@ to replace the symbol under cursor"
   ;; "cl" 'evilnc-comment-or-uncomment-to-the-line
   ;; "cc" 'evilnc-copy-and-comment-lines
   ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
+  "ct" 'ctags-create-or-update-tags-table
   "cd" 'evilcvn-change-symbol-in-defun
   "cb" 'evilcvn-change-symbol-in-whole-buffer
   "tt" 'ido-goto-symbol ;; same as my vim hotkey
@@ -273,9 +273,6 @@ to replace the symbol under cursor"
   "xc" 'save-buffers-kill-terminal
   "xo" 'helm-find-files
   "vd" 'scroll-other-window
-  "vr" 'vr/replace
-  "vq" 'vr/query-replace
-  "vm" 'vr/mc-mark
   "vu" '(lambda () (interactive) (scroll-other-window-down nil))
   "js" 'w3mext-search-js-api-mdn
   "je" 'js2-display-error-list
@@ -287,7 +284,6 @@ to replace the symbol under cursor"
   "xz" 'suspend-frame
   "xvv" 'vc-next-action
   "xva" 'git-add-current-file
-  "xvp" 'git-push-remote-origin
   "xrf" 'git-reset-current-file
   "xvu" 'git-add-option-update
   "xvg" 'vc-annotate
@@ -299,7 +295,7 @@ to replace the symbol under cursor"
   "xvs" 'git-gutter:stage-hunk
   "xvr" 'git-gutter:revert-hunk
   "xvl" 'vc-print-log
-  "xvb" 'git-messenger:popup-message
+  "xvp" 'git-messenger:popup-message
   "fnn" 'fancy-narrow-to-region
   "fnd" 'fancy-narrow-to-defun
   "fnw" 'fancy-widen
@@ -330,7 +326,6 @@ to replace the symbol under cursor"
   "zwu" 'wg-undo-wconfig-change
   "zwr" 'wg-redo-wconfig-change
   "zws" 'wg-save-wconfig
-  "wf" 'popup-which-function
   )
 ;; }}
 

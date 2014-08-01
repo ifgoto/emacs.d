@@ -1,21 +1,19 @@
 * Warning
-- I'm using [[http://www.vim.org][Vim]] key binding. Please see section *Tips* if you prefer the Emacs key binding.
+- I'm using [[http://www.vim.org][Vim]] key binding. Please see "Tips" section if you prefer the Emacs key binding.
 - People in Mainland China may need [[http://code.google.com/p/goagent/][goagent]] to download packages from ELPA. Run command "http_proxy=http://127.0.0.1:8087 emacs -nw" after starting goagent server (or any proxy server).
-- C++/C developers, you need tell Emacs location of header files. You *MUST* see section `clang` now!
-- I suggest Windows users using [[http://www.cygwin.com/][Cygwin]] version Emacs to avoid overhead of setting up third party tools. But this configuration is still usable even in  native windows Emacs if you set up environment variable HOME.
+- C++/C developers, you need tell Emacs where to search headers to make auto-complete work. See section `clang` for details.
+- I suggest Windows users using [[http://www.cygwin.com/][Cygwin]] version Emacs to avoid some overhead of setting up third party tools. But this configuration is still usable even in  native windows Emacs.
 - I whitelist packages from [[http://melpa.milkbox.net][melpa]] because it is too cutting edge. Modify variable "melpa-include-packages" in init-elpa.el if prefer some package from it.
-- If you not willing to fetch packages from remote repositories, see the section *Install packages without elpa/marmalade/melpa* for easier way.
-- In your bug report, please include details of environment (OS, Emacs version ...) and the full output of `emacs --debug-init`.
-- Remove bundled emacs 22 at first *if you are using OS X*!
+- Many users have issue to fetch packages from elpa/marmalade/melpa. Check the section "Install packages without elpa/marmalade/melpa" for solutions.
 
 * General
-My first priority is *stable*. So I use fewer cutting-edge packages from [[http://melpa.milkbox.net][melpa]]. If you want to get all the latest package from melpa, search the line containing "(setq package-filter-function nil)" in "init-elpa.el" and *un-comment* it.
+My first priority is -stable-. So I use fewer cutting-edge packages from [[http://melpa.milkbox.net][melpa]].
 
 Most modern popular programming languages are supported (C/C++/Java/Ruby/Perl/Python/C#/Lua/Javascript ...).
 
 * Features
 - All key binding and plugins are usable in terminal
-- Real time HTML syntax checker enabled (you need install tidy or tidy-html5). I recommend tidy-html5.
+- Real time HTML syntax checker enabled (you need install tidy)
 - git or subversion is *NOT* needed. You *DONOT* need run 'git submodule update'.
 - optimized for cross-platform C++ development with CMake and wxWidgets
 - emacs-w3m (console browser)
@@ -27,7 +25,7 @@ Most modern popular programming languages are supported (C/C++/Java/Ruby/Perl/Py
 - yasnippet and my customized snippets (insert code snippet by typing less keys)
 
 * Install
-Download [[https://github.com/redguardtoo/emacs.d/archive/master.zip][this zip file]] and extract its content into ~/.emacs.d. Ensure that the 'init.el' contained in this repo ends up at ~/.emacs.d/init.el and old ~/.emacs *IS REMOVED*.
+Download [[https://github.com/redguardtoo/emacs.d/archive/master.zip][this zip file]] and extract its content into ~/.emacs.d. Ensure that the 'init.el' contained in this repo ends up at ~/.emacs.d/init.el and old -~/.emacs *IS REMOVED*.
 
 Make sure you are connected to the internet.
 
@@ -36,11 +34,7 @@ you may need run the below command in the terminal at least once to update the c
 emacs -nw --batch -l ~/.emacs.d/init.el -f package-refresh-contents
 #+END_SRC
 
-*If you cannot download packages from remote repository (for example, you are behind company firewall), don't panic!*
-
-You do have USB stick, right?
-
-Check the section *Install packages without elpa/marmalade/melpa* for solutions.
+Package repository is like Emacs App stores but all the Apps are FREE.
 
 * Directory structure
 init.el is main file which include all the other *.el files.
@@ -67,7 +61,7 @@ These tools are *OPTIONAL*. Your Emacs will NOT crash if they are not installed.
 - required by `flymake-lua`
 - install through OS package manager
 
-** aspell (RECOMMENDED) or hunspell, and corresponding dictionary (aspell-en, for example)
+** aspell or hunspell (RECOMMENDED), and corresponding dictionary (aspell-en, for example)
 - needed by `flyspell`
 - hunspell is the alternative of `aspell`. So you need only install either aspell or hunspell.
 - install through OS package manager
@@ -77,10 +71,9 @@ These tools are *OPTIONAL*. Your Emacs will NOT crash if they are not installed.
 - needed by lisp `slime`
 - install through OS package manager
 
-** tidy (html tidy program) or html5-tidy (RECOMMENDED)
+** tidy (html tidy program)
 - needed by `web-mode` for real time HTML syntax check
 - install through OS package manager
-- For html5-tidy, you need [[https://github.com/w3c/tidy-html5/archive/master.zip][download its source code]] and build it manually
 
 ** csslint
 - install `node.js` through OS package manager, then `sudo npm install -g csslint`
@@ -96,8 +89,8 @@ These tools are *OPTIONAL*. Your Emacs will NOT crash if they are not installed.
 ** [[http://clang.llvm.org][Clang]]
 - needed by `cpputils-cmake`, `flymake`, `company-clang`
 - install through OS package manager
-- If you use `cpputils-cmake` and `cmake`, `cpputils-cmake` will do all the set up for you. You don't need read next item!
-- If you use `company-clang`, add `(setq company-clang-arguments '("-I/example1/dir" "-I/example2/dir"))` into ~/.emacs.d/init.el
+- If you use `company-clang` (default), add `(setq company-clang-arguments '("-I/example1/dir" "-I/example2/dir"))` into ~/.emacs.d/init.el
+- If you use `cpputils-cmake` and `cmake`, `cpputils-cmake` will do all the set up for you.
 
 ** [[https://addons.mozilla.org/en-us/firefox/addon/mozrepl/][MozRepl firefox addon]]
 - needed by [[http://www.emacswiki.org/emacs/MozRepl][MozRepl]]
@@ -141,24 +134,24 @@ Here are the exact steps you need follow:
 - Click "Download ZIP"
 - Extract zip somewhere say "~/myelpa".
 - Double check that there is a file name "archive-contents" in the directory "~/myelpa".
-- uncomment below code in ~/.emacs.d/init-elpa.el.
+- insert below code into of ~/.emacs.d/init.el.
 #+BEGIN_SRC bash
 (setq package-archives '(("myelpa" . "~/myelpa/")))
 #+END_SRC
 
-That's it. You will never need internet connection in the future.
+That's it. You will never need internect connection in the future.
 
-Please note that all your packages are locked to the versions I'm using. So you *can't* upgrade package online in the future.
+Please note that all your packages are locked to the versions I'm using. So there is no way you can upgrade package online.
 
 I don't recommend advanced users locking their package version.
 
 ** Solution 2
-If you are too lazy to download ZIP file, you can uncomment below code in ~/.emacs.d/init-elpa.el,
+If you are too lazy to download ZIP file, you can insert one line into your init.el,
 #+BEGIN_SRC bash
 (setq package-archives '(("myelpa" . "https://raw.github.com/redguardtoo/myelpa/master/")))
 #+END_SRC
 
-Then you are good to go. Obviously you need internet connection to access github.com.
+Then you are good to go. Obviously you need internet connection to access github.com. So your choice.
 
 * Report bug
 Please file bug report at [[https://github.com/redguardtoo/emacs.d]]. Don't send me email!
@@ -170,15 +163,14 @@ Some package cannot be downloaded automatically because of network problem.
 
 You need manually `M-x list-packages` and install it or just `M-x package-refresh-content` and restart Emacs.
 
+You can speed up the start up by NOT loading some heavy weight components like evil or yasnippet. All you need to do is add below code into ~/.bashrc:
+#+BEGIN_SRC bash
+alias e=emacs -q --no-splash --eval="(setq light-weight-emacs t)" -l "$HOME/.emacs.d/init.el"
+#+END_SRC
+
 If you use `gnus` for email (Gmail, for example). Check ~/.emacs.d/init-gnus.el which includes my most settings except my private stuff. Here is [[http://blog.binchen.org/?p=403][my Gnus tutorial]].
 
 To toggle Chinese input method (eim, for example), press `C-\` or run command `M-x toggle-input-method`.
 
 * My personal custom.el (OPTIONAL)
 It's publicized at [[http://blog.binchen.org/?p=430]]. It contains my personal stuff like color-theme and time locale.
-* About Emacs23
-Emacs23 support will *be dropped* in one year <2015-04-24 Thu>.
-Currently Emacs 23 will not support below packages:
-- helm
-- org-mode and its third party packages
-- company-mode

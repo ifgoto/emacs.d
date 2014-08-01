@@ -492,11 +492,7 @@ value will take effect only after (re)enabling
 
 (defun keyfreq-autosave--do ()
   "Function executed periodically to save the `keyfreq-table' in `keyfreq-file'."
-  ;; I want to exit emacs as usually even there is exception here
-  (condition-case nil
-      (keyfreq-table-save keyfreq-table)
-    (error
-     (message "~/.emacs.keyfreq is corrupt"))))
+  (keyfreq-table-save keyfreq-table))
 
 
 (provide 'keyfreq)

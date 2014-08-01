@@ -1,5 +1,3 @@
-(require 'helm-config)
-
 (helm-mode 1)
 
 (setq helm-completing-read-handlers-alist
@@ -25,12 +23,19 @@
         (execute-extended-command . ido)
         (minibuffer-completion-help . nil)
         (minibuffer-complete . nil)
-        (c-set-offset . nil)
         (wg-load . ido)
         (rgrep . nil)
         (read-directory-name . ido)
         ))
 
+
+;; {{make helm-ls-git-ls more UI friendly
+(require 'helm-ls-git)
+(helm-attrset 'header-name
+                '(lambda (name) (concat name ", `C-]' to toggle full path"))
+                helm-source-ls-git)
+(define-key helm-map (kbd ",k") 'helm-keyboard-quit)
+;; }}
 
 ;; {{helm-gtags
 ;; customize
@@ -59,19 +64,16 @@
       (global-set-key (kbd "C-x C-o") 'helm-find-files)
       (global-set-key (kbd "C-c f") 'helm-for-files)
       (global-set-key (kbd "C-c y") 'helm-c-yas-complete)
+      (global-set-key (kbd "C-c C-g") 'helm-ls-git-ls)
       (global-set-key (kbd "C-c i") 'helm-imenu)
       )
   (global-set-key (kbd "C-x C-o") 'ffap)
   )
 
-(autoload 'helm-swoop "helm-swoop" nil t)
-(autoload 'helm-back-to-last-point "helm-swoop" nil t)
+(autoload 'helm-swoop "helm-swoop" "helm-swoop" t)
+(autoload 'helm-back-to-last-point "helm-swoop" t)
 
 ;; When doing isearch, hand the word over to helm-swoop
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-
-
-(autoload 'helm-ls-git-ls "helm-ls-git" nil t)
-(autoload 'helm-browse-project "helm-ls-git" nil t)
 
 (provide 'init-helm)

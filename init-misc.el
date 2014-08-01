@@ -1,160 +1,9 @@
 ;;----------------------------------------------------------------------------
-;; Some basic preferences
-;;----------------------------------------------------------------------------
-(setq-default
- blink-cursor-delay 0
- blink-cursor-interval 0.4
- bookmark-default-file "~/.emacs.d/.bookmarks.el"
- buffers-menu-max-size 30
- case-fold-search t
- compilation-scroll-output t
- ediff-split-window-function 'split-window-horizontally
- ediff-window-setup-function 'ediff-setup-windows-plain
- grep-highlight-matches t
- grep-scroll-output t
- indent-tabs-mode nil
- line-spacing 0.2
- mouse-yank-at-point t
- set-mark-command-repeat-pop t
- tooltip-delay 1.5
- truncate-lines nil
- truncate-partial-width-windows nil
- ;; no annoying beep on errors
- visible-bell t)
-
-(global-auto-revert-mode)
-(setq global-auto-revert-non-file-buffers t
-      auto-revert-verbose nil)
-
-;; @see http://www.quora.com/Whats-the-best-way-to-edit-remote-files-from-Emacs
-(setq tramp-default-method "ssh")
-(setq tramp-auto-save-directory "~/.backups/tramp/")
-(setq tramp-chunksize 8192)
-
-;; But don't show trailing whitespace in SQLi, inf-ruby etc.
-(add-hook 'comint-mode-hook
-          (lambda () (setq show-trailing-whitespace nil)))
-
-(transient-mark-mode t)
-
-(define-key global-map (kbd "RET") 'newline-and-indent)
-
-(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
-(autoload 'csv-mode "csv-mode" "Major mode for comma-separated value files." t)
-'
-;;----------------------------------------------------------------------------
-;; Don't disable narrowing commands
-;;----------------------------------------------------------------------------
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'narrow-to-defun 'disabled nil)
-
-;;----------------------------------------------------------------------------
-;; Show matching parens
-;;----------------------------------------------------------------------------
-(paren-activate)     ; activating mic-paren
-
-;;----------------------------------------------------------------------------
-;; Fix per-window memory of buffer point positions
-;;----------------------------------------------------------------------------
-(global-pointback-mode)
-
-;;----------------------------------------------------------------------------
-;; Handy key bindings
-;;----------------------------------------------------------------------------
-;; To be able to M-x without meta
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-
-(global-set-key (kbd "C-.") 'set-mark-command)
-(global-set-key (kbd "C-x C-.") 'pop-global-mark)
-
-;;----------------------------------------------------------------------------
-;; Page break lines
-;;----------------------------------------------------------------------------
-(global-page-break-lines-mode)
-
-;;----------------------------------------------------------------------------
-;; Shift lines up and down with M-up and M-down
-;;----------------------------------------------------------------------------
-(move-text-default-bindings)
-
-(defun suspend-mode-during-cua-rect-selection (mode-name)
-  "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
-  (let ((flagvar (intern (format "%s-was-active-before-cua-rectangle" mode-name)))
-        (advice-name (intern (format "suspend-%s" mode-name))))
-    (eval-after-load 'cua-rect
-      `(progn
-         (defvar ,flagvar nil)
-         (make-variable-buffer-local ',flagvar)
-         (defadvice cua--activate-rectangle (after ,advice-name activate)
-           (setq ,flagvar (and (boundp ',mode-name) ,mode-name))
-           (when ,flagvar
-             (,mode-name 0)))
-         (defadvice cua--deactivate-rectangle (after ,advice-name activate)
-           (when ,flagvar
-             (,mode-name 1)))))))
-
-;;----------------------------------------------------------------------------
-;; Random line sorting
-;;----------------------------------------------------------------------------
-(defun sort-lines-random (beg end)
-  "Sort lines in region randomly."
-  (interactive "r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region beg end)
-      (goto-char (point-min))
-      (let ;; To make `end-of-line' and etc. to ignore fields.
-          ((inhibit-field-text-motion t))
-        (sort-subr nil 'forward-line 'end-of-line nil nil
-                   (lambda (s1 s2) (eq (random 2) 0)))))))
-
-;need install browse-kill-ring
-(browse-kill-ring-default-keybindings)
-
-(add-hook 'prog-mode-hook
-          '(lambda ()
-             ;; enable for all programming modes
-             ;; http://emacsredux.com/blog/2013/04/21/camelcase-aware-editing/
-             (subword-mode)
-             ;; eldoc, show API doc in minibuffer echo area
-             (turn-on-eldoc-mode)
-             ;; show trailing spaces in a programming mod
-             (setq show-trailing-whitespace t)))
-
-;; turns on auto-fill-mode, don't use text-mode-hook because for some
-;; mode (org-mode for example), this will make the exported document
-;; ugly!
-;; (add-hook 'markdown-mode-hook 'turn-on-auto-fill)
-(add-hook 'change-log-mode-hook 'turn-on-auto-fill)
-(add-hook 'cc-mode-hook 'turn-on-auto-fill)
-(global-set-key (kbd "C-c q") 'auto-fill-mode)
-
-;; {{ whitespace
-;; (require 'whitespace)
-;; (setq whitespace-style '(face empty tabs lines-tail trailing))
-;; (global-whitespace-mode t)
-;; }}
-
-;; some project prefer tab, so be it
-;; @see http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
-(setq-default tab-width 4)
-(defun toggle-indent-tab ()
-  (interactive)
-  (if indent-tabs-mode
-      (progn
-        (setq indent-tabs-mode nil))
-    (progn
-        (setq indent-tabs-mode t)
-        (setq indent-line-function 'insert-tab)
-      )))
-;;----------------------------------------------------------------------------
 ;; Misc config - yet to be placed in separate files
 ;;----------------------------------------------------------------------------
 ;; {{ shell and conf
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.[a-zA-Z]+rc$" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.aspell\\.en\\.pws\\'" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.meta\\'" . conf-mode))
 ;; }}
 
 
@@ -310,21 +159,10 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-;; effective emacs item 9
+;effiective emacs item9
 (defalias 'qrr 'query-replace-regexp)
 
 (setq-default regex-tool-backend 'perl)
-
-;; {{ work around color theme bug
-;; @see https://plus.google.com/106672400078851000780/posts/KhTgscKE8PM
-(defun disable-all-themes ()
-  "disable all active themes."
-  (dolist (i custom-enabled-themes)
-    (disable-theme i)))
-
-(defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes))
-;; }}
 
 ;;; {{ clipboard stuff
 ;; Use the system clipboard
@@ -334,82 +172,63 @@
 ;; xclip has some problem when copying under Linux
 (defun copy-yank-str (msg)
   (kill-new msg)
-  (cond
-   ;; display-graphic-p need windows 23.3.1
-   ((and (display-graphic-p) x-select-enable-clipboard)
-    (x-set-selection 'CLIPBOARD msg))
-   (t (with-temp-buffer
-        (insert msg)
-        (shell-command-on-region (point-min) (point-max)
-                                 (cond
-                                  ((eq system-type 'cygwin) "putclip")
-                                  ((eq system-type 'darwin) "pbcopy")
-                                  (t "xsel -ib")
-                                  )))
-    )))
+  (with-temp-buffer
+    (insert msg)
+    (shell-command-on-region (point-min) (point-max)
+                             (cond
+                              ((eq system-type 'cygwin) "putclip")
+                              ((eq system-type 'darwin) "pbcopy")
+                              (t "xsel -ib")
+                              ))))
 
-(defun cp-filename-of-current-buffer ()
+(defun copy-filename-of-current-buffer ()
   "copy file name (NOT full path) into the yank ring and OS clipboard"
   (interactive)
   (let ((filename))
     (when buffer-file-name
       (setq filename (file-name-nondirectory buffer-file-name))
+      (kill-new filename)
       (copy-yank-str filename)
       (message "filename %s => clipboard & yank ring" filename)
       )))
 
-(defun cp-fullpath-of-current-buffer ()
+(defun copy-full-path-of-current-buffer ()
   "copy full path into the yank ring and OS clipboard"
   (interactive)
   (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))
     (copy-yank-str (file-truename buffer-file-name))
     (message "full path of current buffer => clipboard & yank ring")
     ))
 
 (global-set-key (kbd "C-x v f") 'copy-full-path-of-current-buffer)
 
-;; {{ git-messenger
-(require 'git-messenger)
-;; show details to play `git blame' game
-(setq git-messenger:show-detail t)
-(add-hook 'git-messenger:after-popup-hook (lambda (msg)
-                                            ;; extract commit id and put into the kill ring
-                                            (when (string-match "\\(commit *: *\\)\\([0-9a-z]+\\)" msg)
-                                              (kill-new (match-string 2 msg)))
-                                            (copy-yank-str msg)
-                                            (message "commit details > clipboard & kill-ring")))
-(global-set-key (kbd "C-x v p") 'git-messenger:popup-message)
-;; }}
-
 (defun copy-to-x-clipboard ()
   (interactive)
   (if (region-active-p)
-      (progn
+    (progn
+     ; my clipboard manager only intercept CLIPBOARD
+      (shell-command-on-region (region-beginning) (region-end)
         (cond
-         ((and (display-graphic-p) x-select-enable-clipboard)
-          (x-set-selection 'CLIPBOARD (buffer-substring (region-beginning) (region-end))))
-         (t (shell-command-on-region (region-beginning) (region-end)
-                                     (cond
-                                      (*cygwin* "putclip")
-                                      (*is-a-mac* "pbcopy")
-                                      (*linux* "xsel -ib")))
-            ))
-        (message "Yanked region to clipboard!")
-        (deactivate-mark))
-        (message "No region active; can't yank to clipboard!")))
+         (*cygwin* "putclip")
+         (*is-a-mac* "pbcopy")
+         (t "xsel -ib")
+         )
+        )
+      (message "Yanked region to clipboard!")
+      (deactivate-mark))
+    (message "No region active; can't yank to clipboard!")))
 
 (defun paste-from-x-clipboard()
   (interactive)
-  (cond
-   ((and (display-graphic-p) x-select-enable-clipboard)
-    (insert (x-selection 'CLIPBOARD)))
-   (t (shell-command
-       (cond
-        (*cygwin* "getclip")
-        (*is-a-mac* "pbpaste")
-        (t "xsel -ob"))
-       1))
-   ))
+  (shell-command
+   (cond
+    (*cygwin* "getclip")
+    (*is-a-mac* "pbpaste")
+    (t "xsel -ob")
+    )
+   1)
+  )
 
 (defun my/paste-in-minibuffer ()
   (local-set-key (kbd "M-y") 'paste-from-x-clipboard)
@@ -509,6 +328,10 @@ Current position is preserved."
     (goto-char orig-pos)))
   )
 
+;; enable for all programming modes
+;; http://emacsredux.com/blog/2013/04/21/camelcase-aware-editing/
+(add-hook 'prog-mode-hook 'subword-mode)
+
 ;; { smarter navigation to the beginning of a line
 ;; http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
 (defun smarter-move-beginning-of-line (arg)
@@ -558,7 +381,7 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c C-q") 'open-readme-in-git-root-directory)
 
 ;; from http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
-(defun vc-rename-file-and-buffer ()
+(defun rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -572,8 +395,9 @@ point reaches the beginning or end of the buffer, stop there."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil)))))))
+(global-set-key (kbd "C-c C-r")  'rename-file-and-buffer)
 
-(defun vc-copy-file-and-rename-buffer ()
+(defun copy-file-and-rename-buffer ()
 "copy the current buffer and file it is visiting.
 if the old file is under version control, the new file is added into
 version control automatically"
@@ -589,6 +413,7 @@ version control automatically"
         (when (vc-backend filename)
           (vc-register)
          )))))
+(global-set-key (kbd "C-c c")  'copy-file-and-rename-buffer)
 
 ;; @see http://wenshanren.org/?p=298
 (defun wenshan-edit-current-file-as-root ()
@@ -726,8 +551,15 @@ The full path into relative path insert it as a local file link in org-mode"
   (interactive)
   (let (str)
     (with-temp-buffer
-      (paste-from-x-clipboard)
-      (setq str (buffer-string)))
+      (shell-command
+       (cond
+        (*cygwin* "getclip")
+        (*is-a-mac* "pbpaste")
+        (t "xsel -ob")
+        )
+       1)
+      (setq str (buffer-string))
+      )
 
     ;; convert to relative path (relative to current buffer) if possible
     (let ((m (string-match (file-name-directory (buffer-file-name)) str) ))
@@ -770,6 +602,12 @@ The full path into relative path insert it as a local file link in org-mode"
     (copy-yank-str rlt)
     (message "%s => clipboard & yank ring" rlt)
       ))
+
+(when (< emacs-major-version 24)
+  (require 'color-theme)
+  (setq color-theme-is-global t)
+  (color-theme-lethe)
+  )
 
 (defun add-pwd-into-load-path ()
   "add current directory into load-path, useful for elisp developers"
@@ -840,7 +678,6 @@ when toggle off input method, switch to evil-normal-state if current state is ev
 
 ;; color theme
 (require 'color-theme)
-(require 'color-theme-molokai)
 (color-theme-molokai)
 
 ;; {{smart-compile: http://www.emacswiki.org/emacs/SmartCompile
@@ -852,15 +689,8 @@ when toggle off input method, switch to evil-normal-state if current state is ev
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
 ;; }}
 
-;; {{ support MY packages which are not included in melpa
-(autoload 'wxhelp-browse-class-or-api "wxwidgets-help" "" t)
-(autoload 'issue-tracker-increment-issue-id-under-cursor "issue-tracker")
-(autoload 'elpamr-create-mirror-for-installed "elpa-mirror")
-(autoload 'org2nikola-export-subtree "org2nikola")
-;; }}
-
 (setq web-mode-imenu-regexp-list
-  '(("<\\(h[1-9]\\)\\([^>]*\\)>\\([^<]*\\)" 1 3 ">" nil)
+  '(;; ("<\\(h[1-9]\\)\\([^>]*\\)>\\([^<]*\\)" 1 3 ">" nil)
     ("^[ \t]*<\\([@a-z]+\\)[^>]*>? *$" 1 " id=\"\\([a-zA-Z0-9_]+\\)\"" "#" ">")
     ("^[ \t]*<\\(@[a-z.]+\\)[^>]*>? *$" 1 " contentId=\"\\([a-zA-Z0-9_]+\\)\"" "=" ">")
     ))
@@ -870,7 +700,7 @@ when toggle off input method, switch to evil-normal-state if current state is ev
 (setq imenu-max-item-length 64)
 ;; }}
 
-(setq color-theme-illegal-faces "^\\(w3-\\|dropdown-\\|info-\\|linum\\|yas-\\|font-lock\\)")
+(setq color-theme-illegal-faces "^\\(w3-\\|dropdown-\\|info-\\|linum\\|yas-\\)")
 
 (defun toggle-web-js-offset ()
   "toggle js2-basic-offset"
@@ -891,34 +721,5 @@ when toggle off input method, switch to evil-normal-state if current state is ev
   (global-set-key (kbd "C-=") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
   )
-
-;; {{ which-func
-(autoload 'which-function "which-func")
-(autoload 'popup-tip "popup")
-(defun popup-which-function ()
-  (interactive)
-  (let ((msg (which-function)))
-    (popup-tip msg)
-    (copy-yank-str msg)
-    ))
-;; }}
-
-(autoload 'vr/replace "visual-regexp")
-(autoload 'vr/query-replace "visual-regexp")
-;; if you use multiple-cursors, this is for you:
-(autoload 'vr/mc-mark "visual-regexp")
-
-;; @see http://www.emacswiki.org/emacs/EasyPG#toc4
-;; besides, use gnupg 1.4.9 instead of 2.0
-(defadvice epg--start (around advice-epg-disable-agent disable)
-  "Make epg--start not able to find a gpg-agent"
-  (let ((agent (getenv "GPG_AGENT_INFO")))
-    (setenv "GPG_AGENT_INFO" nil)
-    ad-do-it
-    (setenv "GPG_AGENT_INFO" agent)))
-
-;; {{go-mode
-(require 'go-mode-load)
-;; }}
 
 (provide 'init-misc)

@@ -1,10 +1,6 @@
 ;;----------------------------------------------------------------------------
 ;; Provide a version of Emacs 24's 'string-prefix-p in older emacsen
 ;;----------------------------------------------------------------------------
- (unless (fboundp 'delete-all-overlays)
-   (defun delete-all-overlays ()
-     (remove-overlays)))
-
 (unless (fboundp 'string-prefix-p)
   (defun string-prefix-p (str1 str2 &optional ignore-case)
     "Return non-nil if STR1 is a prefix of STR2.
@@ -13,18 +9,6 @@ to case differences."
     (eq t (compare-strings str1 nil nil
                            str2 0 (length str1) ignore-case))))
 
-
-(unless (fboundp 'plist-to-alist)
-  (defun plist-to-alist (the-plist)
-    (defun get-tuple-from-plist (the-plist)
-      (when the-plist
-        (cons (car the-plist) (cadr the-plist))))
-
-    (let ((alist '()))
-      (while the-plist
-        (add-to-list 'alist (get-tuple-from-plist the-plist))
-        (setq the-plist (cddr the-plist)))
-      alist)))
 
 ;;----------------------------------------------------------------------------
 ;; Allow recent packages to safely pass an arg to 'called-interactively-p

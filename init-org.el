@@ -79,7 +79,10 @@
       (require 'org-clock)
       ; @see http://irreal.org/blog/?p=671
       (setq org-src-fontify-natively t)
+      ;;(require 'org-checklist)
       (require 'org-fstree)
+      (setq org-ditaa-jar-path (format "%s%s" (if *cygwin* "c:/cygwin" "")
+                                       (expand-file-name "~/.emacs.d/elpa/contrib/scripts/ditaa.jar")) )
       (defun soft-wrap-lines ()
         "Make lines wrap at window edge and on word boundary,
         in current buffer."
@@ -102,13 +105,5 @@
                 (lambda (url &optional new)
                   (w3m-browse-url url t))))))
     ad-do-it))
-
-;; {{ org2nikola set up
-(setq org2nikola-output-root-directory "~/projs/blog.binchen.org")
-(setq org2nikola-use-google-code-prettify t)
-(setq org2nikola-prettify-unsupported-language
-      '(elisp "lisp"
-              emacs-lisp "lisp"))
-;; }}
 
 (provide 'init-org)
