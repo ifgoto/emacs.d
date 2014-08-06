@@ -3,7 +3,7 @@
 /.emacs.desktop
 /auto-save-list
 /.session
-/custom.el
+#/custom.el
 *.elc
 CVS
 .svn
@@ -22,7 +22,7 @@ cookies
 /newsticker
 /ac-comphist.dat
 \#*
-/elpa
+#/elpa
 eshell/
 semanticdb/
 *.swp
