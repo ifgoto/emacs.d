@@ -24,6 +24,12 @@
   (find-file (concat "~/.emacs.d/" "custom.el")))
 (global-set-key (kbd "C-x E") 'visit-.custom)
 
+(defun visit-org-log ()
+  "visit-org-test-file"
+  (interactive)
+  (find-file (concat "~/org/" "test.org")))
+(global-set-key (kbd "C-x g") 'visit-org-log)
+
 
 
 ; Personal Information

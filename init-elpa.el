@@ -221,7 +221,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'tidy)
 (require-package 'unfill)
 (require-package 'whole-line-or-region)
-(require-package 'auctex)
+(require-package 'auctex '(11 87 5) nil)
 (require-package 'etags-select '(1 13 0) nil) ;; evil may need it
 (require-package 'w3m)
 (require-package 'idomenu)

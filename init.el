@@ -19,6 +19,8 @@
 (setq *emacs23* (and (not *xemacs*) (or (>= emacs-major-version 23))) )
 (setq *emacs24* (and (not *xemacs*) (or (>= emacs-major-version 24))) )
 
+;;for the local package
+(setq package-archives '(("myelpa" . "~/emacs/pack/myelpa/")))
 ;----------------------------------------------------------------------------
 ; Functions (load all files in defuns-dir)
 ; Copied from https://github.com/magnars/.emacs.d/blob/master/init.el
