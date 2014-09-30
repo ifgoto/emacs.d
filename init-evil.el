@@ -212,7 +212,8 @@ to replace the symbol under cursor"
   "s1" 'delete-other-windows
   "s2" '(lambda () (interactive) (if *emacs23* (split-window-vertically) (split-window-right)))
   "s3" '(lambda () (interactive) (if *emacs23* (split-window-horizontally) (split-window-below)))
-  "su" 'winner-undo
+  ;; "su" 'winner-undo
+  "su" 'sudo-reopen
   "x0" 'delete-window
   "x1" 'delete-other-windows
   "x2" '(lambda () (interactive) (if *emacs23* (split-window-vertically) (split-window-right)))
