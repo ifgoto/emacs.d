@@ -10,7 +10,7 @@
    "eim-wb" "euc-cn" 'eim-use-package
    "wb" "EIM Chinese Wubi Input Method" "~/.emacs.d/site-lisp/eim/wb.txt")
 ;; (set-input-method "eim-py")             ; use Pinyin input method
-(set-input-method "eim-wb")             ; use Pinyin input method
+(set-input-method "eim-wb")             ; use Wubi input method
 (setq activate-input-method t)          ; active input method
 (toggle-input-method nil)               ; default is turn off
 (defun my-eim-py-activate-function ()
