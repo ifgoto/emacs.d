@@ -1,4 +1,5 @@
 ;; @see https://bitbucket.org/lyro/evil/issue/360/possible-evil-search-symbol-forward
+
 ;; evil 1.0.8 search word instead of symbol
 (setq evil-symbol-word-search t)
 ;; load undo-tree and ert
@@ -150,7 +151,8 @@ to replace the symbol under cursor"
   "bu" 'backward-up-list
   "ef" 'end-of-defun
   "db" 'sdcv-search-pointer ;; in another buffer
-  "dt" 'sdcv-search-input+ ;; in tip
+  ;; "dt" 'sdcv-search-input+ ;; in tip
+  "dt" 'my-insert-time-string ;;for the datetime
   "mf" 'mark-defun
   "em" 'erase-message-buffer
   "eb" 'eval-buffer
@@ -243,6 +245,7 @@ to replace the symbol under cursor"
   "ma" 'mc/mark-all-like-this-in-defun
   "mw" 'mc/mark-all-words-like-this-in-defun
   "ms" 'mc/mark-all-symbols-like-this-in-defun
+  "nm" 'my-insert-name
   ;; recommended in html
   "md" 'mc/mark-all-like-this-dwim
   "rw" 'rotate-windows

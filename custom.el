@@ -1,5 +1,4 @@
 ;; I'm in Australia now
-;; I'm in Australia now
 (setq system-time-locale "C")
 (setq gdb-many-windows t)
 
@@ -157,6 +156,12 @@ If FULL is t, copy full file name."
 (global-set-key (kbd "C-x k") 
         '(lambda () (interactive) 
            (let (kill-buffer-query-functions) (kill-buffer))))
+
+;;for the gtags jump over
+;;c-] may be to hard to remap for it's the code in the c source
+;; (global-set-key (kbd "C-]") 'ggtags-find-tag-dwim)
+(global-set-key (kbd "C-c ]") 'ggtags-find-tag-dwim)
+
 
 
 
@@ -461,4 +466,34 @@ If FULL is t, copy full file name."
   (find-file (concat "/sudo::" sudo-file-real-path))
   (interactive) 
   )
+;;for the key bind to the vi already
 ;; (global-set-key (kbd "C-c s u") 'sudo-reopen)
+
+;;move from init-misc.el
+;; color theme
+(require 'color-theme)
+(color-theme-tty-dark)
+;;(color-theme-molokai)
+;; add the colorscheme
+;;load-theme 'solarized-[light|dark] t
+;; (load-theme 'solarized-dark t)
+
+
+;;for insert the currrent time
+(defun my-insert-time-string () 
+"Insert the date-time in current position." 
+(interactive) 
+(insert (format-time-string " %Y-%m-%d %H:%M:%S %u/7 "))) 
+
+;;for insert name
+(defun my-insert-name () 
+"Insert the name in current position." 
+(interactive) 
+(insert " 1354@nt ")) 
+
+
+;;add to the auto-mode-alist
+(add-to-list 'auto-mode-alist '("\\.mak\\'"      . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.[PpEe]c\\'"      . c-mode))
+(add-to-list 'auto-mode-alist '("\\[Mm]akefile\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\makefile\\.*\\'" . makefile-mode))
