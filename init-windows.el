@@ -39,5 +39,17 @@
 (global-set-key "\C-x|" 'split-window-horizontally-instead)
 (global-set-key "\C-x_" 'split-window-vertically-instead)
 
+;;swap windows left <-> right
+;;from
+;;http://www.cnblogs.com/heshizhu/archive/2012/06/15/2550808.html
+(defun swap-window ()
+  (interactive)
+  (setq temp1 (current-buffer))
+  (other-window 1)
+  (setq temp2 (current-buffer))
+  (switch-to-buffer temp1)
+  (other-window 1)
+  (switch-to-buffer temp2))
+(global-set-key (kbd "C-x 4 s") 'swap-window)
 
 (provide 'init-windows)
