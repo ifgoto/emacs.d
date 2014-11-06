@@ -9,7 +9,8 @@
 (setq w3m-home-page
       (if (file-readable-p "~/html/home.html")
         (concat "file://" (expand-file-name "~/html/home.html"))
-        "http://www.google.com.au"))
+        ;; "http://www.google.com.au"))
+        "http://www.baidu.com"))
 
 (setq w3m-use-toolbar t
       ;w3m-use-tab     nil
@@ -22,14 +23,18 @@
 (setq w3m-search-default-engine "g")
 (eval-after-load "w3m-search" '(progn
                                  ; C-u S g RET <search term> RET
-                                 (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com.au/search?hl=en&q=%s" utf-8))
+                                 ;; (add-to-list 'w3m-search-engine-alist '("g" "http://www.google.com.au/search?hl=en&q=%s" utf-8))
+                                 (add-to-list 'w3m-search-engine-alist '("g" "http://64.233.185.99/search?hl=en&q=%s" utf-8))
                                  (add-to-list 'w3m-search-engine-alist '("wz" "http://zh.wikipedia.org/wiki/Special:Search?search=%s" utf-8))
-                                 (add-to-list 'w3m-search-engine-alist '("q" "http://www.google.com.au/search?hl=en&q=%s+site:stackoverflow.com" utf-8))
+                                 ;; (add-to-list 'w3m-search-engine-alist '("q" "http://www.google.com.au/search?hl=en&q=%s+site:stackoverflow.com" utf-8))
+                                 (add-to-list 'w3m-search-engine-alist '("q" "http://64.233.185.99/search?hl=en&q=%s+site:stackoverflow.com" utf-8))
                                  (add-to-list 'w3m-search-engine-alist '("s" "http://code.ohloh.net/search?s=%s&browser=Default"  utf-8))
                                  (add-to-list 'w3m-search-engine-alist '("b" "http://blogsearch.google.com.au/blogsearch?q=%s" utf-8))
                                  (add-to-list 'w3m-search-engine-alist '("w" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))
                                  (add-to-list 'w3m-search-engine-alist '("d" "http://dictionary.reference.com/search?q=%s" utf-8))
-                                 (add-to-list 'w3m-search-engine-alist '("j" "http://www.google.com.au/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&btnI=1&q=%s+site:developer.mozilla.org" utf-8))
+                                 ;; (add-to-list 'w3m-search-engine-alist '("j" "http://www.google.com.au/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&btnI=1&q=%s+site:developer.mozilla.org" utf-8))
+                                 (add-to-list 'w3m-search-engine-alist '("j" "http://64.233.185.99/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&btnI=1&q=%s+site:developer.mozilla.org" utf-8))
+                                 
                                  ))
 
 (setq w3m-command-arguments       '("-F" "-cookie")

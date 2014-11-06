@@ -151,14 +151,15 @@ to replace the symbol under cursor"
   "bu" 'backward-up-list
   "ef" 'end-of-defun
   "db" 'sdcv-search-pointer ;; in another buffer
-  ;; "dt" 'sdcv-search-input+ ;; in tip
+  "dc" 'sdcv-search-input+ ;; in tip
   "dt" 'my-insert-time-string ;;for the datetime
   "mf" 'mark-defun
   "em" 'erase-message-buffer
   "eb" 'eval-buffer
+  "ee" 'eval-expression
+  "er" 'eval-region
   "srt" 'sr-speedbar-toggle
   "srr" 'sr-speedbar-refresh-toggle
-  "ee" 'eval-expression
   "cx" 'copy-to-x-clipboard
   "cy" 'strip-convert-lines-into-one-big-string
   "cff" 'current-font-face
@@ -168,10 +169,10 @@ to replace the symbol under cursor"
   "ff" 'toggle-full-window ;; I use WIN+F in i3
   "tm" 'get-term
   "px" 'paste-from-x-clipboard
-  ;; "ci" 'evilnc-comment-or-uncomment-lines
-  ;; "cl" 'evilnc-comment-or-uncomment-to-the-line
-  ;; "cc" 'evilnc-copy-and-comment-lines
-  ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
+  "ci" 'evilnc-comment-or-uncomment-lines
+  "cl" 'evilnc-comment-or-uncomment-to-the-line
+  "cc" 'evilnc-copy-and-comment-lines
+  "cp" 'evilnc-comment-or-uncomment-paragraphs
   "ct" 'ctags-create-or-update-tags-table
   "cd" 'evilcvn-change-symbol-in-defun
   "cb" 'evilcvn-change-symbol-in-whole-buffer
@@ -214,13 +215,13 @@ to replace the symbol under cursor"
   "s1" 'delete-other-windows
   "s2" '(lambda () (interactive) (if *emacs23* (split-window-vertically) (split-window-right)))
   "s3" '(lambda () (interactive) (if *emacs23* (split-window-horizontally) (split-window-below)))
-  ;; "su" 'winner-undo
   "su" 'sudo-reopen
   "x0" 'delete-window
   "x1" 'delete-other-windows
   "x2" '(lambda () (interactive) (if *emacs23* (split-window-vertically) (split-window-right)))
   "x3" '(lambda () (interactive) (if *emacs23* (split-window-horizontally) (split-window-below)))
-  "xu" 'winner-undo
+  "wr" 'winner-redo
+  "wu" 'winner-undo
   "to" 'toggle-web-js-offset
   "sl" 'sort-lines
   "ulr" 'uniquify-all-lines-region
@@ -272,7 +273,7 @@ to replace the symbol under cursor"
   "9" 'select-window-9
   "xm" 'smex
   "xx" 'er/expand-region
-  "xf" 'ido-find-file
+  "fi" 'ido-find-file
   "xb" 'ido-switch-buffer
   "xc" 'save-buffers-kill-terminal
   "xo" 'helm-find-files
@@ -305,10 +306,9 @@ to replace the symbol under cursor"
   "fnw" 'fancy-widen
   "xnn" 'narrow-to-region
   "xnw" 'widen
-  "xnd" 'narrow-to-defun
+  "nd" 'narrow-to-defun
+  "wi" 'widen
   "xnr" 'narrow-to-region
-  "xw" 'widen
-  "xd" 'narrow-to-defun
   "zc" 'wg-create-workgroup
   "zk" 'wg-kill-workgroup
   "zv" 'wg-switch-to-workgroup

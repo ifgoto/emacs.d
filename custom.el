@@ -159,8 +159,12 @@ If FULL is t, copy full file name."
 
 ;;for the gtags jump over
 ;;c-] may be to hard to remap for it's the code in the c source
-;; (global-set-key (kbd "C-]") 'ggtags-find-tag-dwim)
+(global-set-key (kbd "C-]") 'ggtags-find-tag-dwim)
 (global-set-key (kbd "C-c ]") 'ggtags-find-tag-dwim)
+;; (define-key evil-motion-state-map "g\C-]" 'find-tag)
+
+
+
 
 
 
