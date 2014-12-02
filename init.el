@@ -89,8 +89,6 @@
 ;; (require 'init-javascript)
 (require 'init-sh)
 ;; (require 'init-php)
-(require 'init-org)
-(require 'init-org-mime)
 ;; (require 'init-css)
 ;; (require 'init-haml)
 (require 'init-python-mode)
@@ -191,6 +189,11 @@
 ;;----------------------------------------------------------------------------
 ;; (require 'eal-define-key)
 (require 'eval-after-load)
+
+
+;;move down for the evil would make the c-c l to comment to the lines
+(require 'init-org)
+(require 'init-org-mime)
 
 ;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
